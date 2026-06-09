@@ -140,6 +140,7 @@ Cloudflare Pages settings:
 - Build command: `npm run build`
 - Output directory: `dist`
 - Environment variables: set the same `PUBLIC_*` values used locally
+- Add `NODE_VERSION=22.12.0` or newer in Cloudflare Pages environment variables
 - Production branch: `main`
 - Preview deployments: enable branch or pull request previews
 

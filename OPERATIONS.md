@@ -191,8 +191,8 @@ Set Cloudflare Pages:
 - Build command: `npm run build`
 - Output directory: `dist`
 - Production branch: `main`
-- Environment variables: `PUBLIC_SITE_URL`, `PUBLIC_SANITY_PROJECT_ID`,
-  `PUBLIC_SANITY_DATASET`, `PUBLIC_CONTACT_EMAIL`
+- Environment variables: `NODE_VERSION=22.12.0` or newer, `PUBLIC_SITE_URL`,
+  `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `PUBLIC_CONTACT_EMAIL`
 
 Deployment behavior:
 

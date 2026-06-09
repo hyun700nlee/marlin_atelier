@@ -1,0 +1,48 @@
+---
+import "@/styles/global.css";
+import SanityStudio from "@/components/sanity/SanityStudio";
+
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
+const dataset = import.meta.env.PUBLIC_SANITY_DATASET || "production";
+const isSanityConfigured = Boolean(projectId) && projectId !== "replacewithprojectid";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Marlin Admin</title>
+  </head>
+  <body class={isSanityConfigured ? "admin-shell" : "admin-shell admin-setup-shell"}>
+    {
+      isSanityConfigured ? (
+        <SanityStudio client:only="react" />
+      ) : (
+        <main class="admin-setup">
+          <section class="admin-setup-panel" aria-labelledby="admin-setup-title">
+            <p class="admin-setup-kicker">Marlin Admin</p>
+            <h1 id="admin-setup-title">Sanity is not configured yet.</h1>
+            <p>
+              The admin studio needs a real Sanity project before artwork can be managed here.
+              The public site is currently using the bundled sample artworks.
+            </p>
+            <dl class="admin-setup-list">
+              <dt>Required</dt>
+              <dd>Set <code>PUBLIC_SANITY_PROJECT_ID</code> to a real Sanity project ID.</dd>
+              <dt>Dataset</dt>
+              <dd>Current dataset fallback: <code>{dataset}</code></dd>
+              <dt>Local setup</dt>
+              <dd>Copy <code>.env.example</code> to <code>.env</code>, then restart the dev server.</dd>
+            </dl>
+            <div class="button-row">
+              <a class="button" href="/">Return to Site</a>
+              <a class="button admin-setup-secondary" href="/#works">View Works</a>
+            </div>
+          </section>
+        </main>
+      )
+    }
+  </body>
+</html>

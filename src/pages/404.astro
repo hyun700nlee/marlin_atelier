@@ -1,0 +1,32 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { buildMailto } from "@/lib/mailto";
+import { getSiteSettings } from "@/lib/settings";
+import { getSiteUrl } from "@/lib/site";
+
+const settings = await getSiteSettings();
+const contactHref = buildMailto({
+  email: settings.contactEmail,
+  artistName: settings.artistName
+});
+---
+
+<SiteLayout
+  title={`Page Not Found | ${settings.artistName}`}
+  description={`The requested ${settings.artistName} portfolio page could not be found.`}
+  canonical={`${getSiteUrl()}/404`}
+  contactEmail={settings.contactEmail}
+  artistName={settings.artistName}
+  noindex
+>
+  <section class="section page-shell">
+    <div class="section-heading">
+      <h2>Page Not Found</h2>
+      <p>The page may have moved, or the artwork link may no longer be available.</p>
+    </div>
+    <div class="button-row">
+      <a class="button" href="/">Return Home</a>
+      <a class="button secondary" href={contactHref}>Contact by Email</a>
+    </div>
+  </section>
+</SiteLayout>

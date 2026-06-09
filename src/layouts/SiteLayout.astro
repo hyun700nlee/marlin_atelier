@@ -1,0 +1,67 @@
+---
+import "@/styles/global.css";
+import { buildMailto } from "@/lib/mailto";
+import { getSiteUrl, siteSettings } from "@/lib/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  contactEmail?: string;
+  artistName?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = siteSettings.description,
+  image = siteSettings.heroImage,
+  canonical = getSiteUrl(),
+  contactEmail = siteSettings.contactEmail,
+  artistName = siteSettings.artistName,
+  noindex = false
+} = Astro.props;
+
+const imageUrl = image.startsWith("http") ? image : `${getSiteUrl()}${image}`;
+const contactHref = buildMailto({ email: contactEmail, artistName });
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="site-nav page-shell" aria-label="Primary navigation">
+        <a class="brand-link" href="/" aria-label={`${artistName} home`}>{artistName}</a>
+        <div class="nav-links">
+          <a href="/#works">Works</a>
+          <a href="/#about">About</a>
+          <a href={contactHref}>Contact</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="footer-inner page-shell">
+        <span>&copy; {new Date().getFullYear()} {artistName}. All rights reserved.</span>
+        <a href={contactHref}>Contact by Email</a>
+      </div>
+    </footer>
+  </body>
+</html>

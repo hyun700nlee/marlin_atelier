@@ -1,0 +1,81 @@
+---
+import GalleryExperience from "@/components/GalleryExperience";
+import "@/components/gallery.css";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { getArtworks } from "@/lib/artworks";
+import { buildMailto } from "@/lib/mailto";
+import { getSiteSettings } from "@/lib/settings";
+import { getSiteUrl } from "@/lib/site";
+
+const artworks = await getArtworks();
+const settings = await getSiteSettings();
+const featuredArtwork = artworks.find((artwork) => artwork.featured) || artworks[0];
+const contactHref = buildMailto({
+  email: settings.contactEmail,
+  artistName: settings.artistName
+});
+const canonical = getSiteUrl();
+---
+
+<SiteLayout
+  title={`${settings.artistName} | Handcraft, Temari, Macramé, Tatting, Knitting and Painting`}
+  description={settings.description}
+  image={featuredArtwork?.coverImage.src || settings.heroImage}
+  canonical={canonical}
+  contactEmail={settings.contactEmail}
+  artistName={settings.artistName}
+>
+  <section
+    class="hero"
+    style={`--hero-image: url('${featuredArtwork?.coverImage.src || settings.heroImage}')`}
+  >
+    <div class="hero-content">
+      <p class="hero-kicker">Handcraft, texture, and quiet repetition</p>
+      <h1 class="hero-title">{settings.artistName}</h1>
+      <p class="hero-copy">{settings.description}</p>
+      <div class="button-row">
+        <a class="button" href="#works">View Works</a>
+        <a class="button secondary" href={contactHref}>Contact by Email</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="works" class="section page-shell">
+    <div class="section-heading">
+      <h2>Works</h2>
+      <p>
+        A sample archive of Temari, macramé, tatting, knitting, and painting work prepared for
+        content replacement in Sanity.
+      </p>
+    </div>
+    <GalleryExperience artworks={artworks} client:load />
+  </section>
+
+  <section id="about" class="section about-band">
+    <div class="page-shell about-grid">
+      <div class="about-image">
+        <img src={settings.profileImage} alt="Sample artwork detail representing Marlin's craft practice." loading="lazy" />
+      </div>
+      <div class="about-copy">
+        <h2>About {settings.artistName}</h2>
+        <p>
+          {settings.artistName}'s work gathers traditional handcraft techniques into a calm visual archive of
+          pattern, surface, and patient repetition. The portfolio is designed to keep the artwork
+          primary while making availability, materials, and inquiries easy to find.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section contact-band">
+    <div class="page-shell">
+      <h2>Contact</h2>
+      <p>
+        For inquiries about works, commissions, or availability, please contact Marlin by email.
+      </p>
+      <div class="button-row">
+        <a class="button" href={contactHref}>Contact by Email</a>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

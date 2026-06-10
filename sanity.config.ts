@@ -17,7 +17,20 @@ export default defineConfig({
         S.list()
           .title("Marlin Admin")
           .items([
-            S.documentTypeListItem("artwork").title("Artworks"),
+            S.listItem()
+              .title("Artworks")
+              .schemaType("artwork")
+              .child(
+                S.documentList()
+                  .title("Artworks")
+                  .schemaType("artwork")
+                  .filter('_type == "artwork"')
+                  .defaultOrdering([
+                    { field: "featured", direction: "desc" },
+                    { field: "order", direction: "asc" },
+                    { field: "_createdAt", direction: "desc" }
+                  ])
+              ),
             S.divider(),
             S.listItem()
               .title("Site Settings")

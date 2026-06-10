@@ -125,6 +125,7 @@ export default defineType({
     defineField({
       name: "coverImage",
       title: "Cover Image",
+      description: "Primary original image. The public site generates a lighter cover thumbnail from this image.",
       type: "image",
       options: {
         hotspot: true
@@ -135,6 +136,7 @@ export default defineType({
     defineField({
       name: "detailImages",
       title: "Detail Images",
+      description: "Optional extra images shown after the primary image on the detail page.",
       type: "array",
       of: [
         {
@@ -144,8 +146,7 @@ export default defineType({
           },
           fields: [imageAltField]
         }
-      ],
-      validation: (Rule) => Rule.required().min(1)
+      ]
     }),
     defineField({
       name: "altText",

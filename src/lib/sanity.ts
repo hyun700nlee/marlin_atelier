@@ -110,17 +110,44 @@ function getImageAlt(source: unknown, fallback: string) {
   return fallback;
 }
 
-function imageFromSanity(source: unknown, alt: string, width = 1600): ArtworkImage | null {
+type SanityImageOptions = {
+  width?: number;
+  quality?: number;
+};
+
+function imageFromSanity(
+  source: unknown,
+  alt: string,
+  { width = 1600, quality }: SanityImageOptions = {}
+): ArtworkImage | null {
   if (!source) return null;
 
   try {
+    let url = imageBuilder.image(source).width(width).auto("format");
+    if (quality) {
+      url = url.quality(quality);
+    }
+
     return {
-      src: imageBuilder.image(source).width(width).auto("format").url(),
+      src: url.url(),
       alt
     };
   } catch {
     return null;
   }
+}
+
+function getSanityAssetRef(source: unknown): string | null {
+  if (!source || typeof source !== "object" || !("asset" in source)) return null;
+
+  const asset = (source as { asset?: unknown }).asset;
+  if (!asset || typeof asset !== "object") return null;
+
+  const ref = (asset as { _ref?: unknown; _id?: unknown })._ref;
+  if (typeof ref === "string" && ref) return ref;
+
+  const id = (asset as { _id?: unknown })._id;
+  return typeof id === "string" && id ? id : null;
 }
 
 function mergeFutureLink(fallback: FutureLink, link?: FutureLink): FutureLink {
@@ -151,13 +178,15 @@ export function mapSanitySiteSettings(
   if (!item) return fallback;
 
   const heroImage =
-    imageFromSanity(item.heroImage, `${item.artistName || fallback.artistName} featured artwork.`, 1800)
+    imageFromSanity(item.heroImage, `${item.artistName || fallback.artistName} featured artwork.`, {
+      width: 1800
+    })
       ?.src || fallback.heroImage;
   const profileImage =
     imageFromSanity(
       item.profileImage,
       `${item.artistName || fallback.artistName} profile or representative artwork.`,
-      1200
+      { width: 1200 }
     )?.src || fallback.profileImage;
 
   return {
@@ -177,12 +206,27 @@ export function mapSanityArtwork(item: SanityArtwork): Artwork | null {
 
   const altText =
     item.altText?.trim() || `${item.title}, an artwork from Marlin's ${item.category} portfolio.`;
-  const coverImage = imageFromSanity(item.coverImage, getImageAlt(item.coverImage, altText), 900);
+  const coverAlt = getImageAlt(item.coverImage, altText);
+  const coverImage = imageFromSanity(item.coverImage, coverAlt, { width: 900, quality: 70 });
+  const galleryCoverImage = imageFromSanity(item.coverImage, coverAlt, { width: 1800 });
   if (!coverImage) return null;
 
+  const seenAssetRefs = new Set<string>();
+  const coverAssetRef = getSanityAssetRef(item.coverImage);
+  if (coverAssetRef) seenAssetRefs.add(coverAssetRef);
+
   const detailImages = (item.detailImages || [])
+    .filter((image) => {
+      const assetRef = getSanityAssetRef(image);
+      if (!assetRef) return true;
+      if (seenAssetRefs.has(assetRef)) return false;
+      seenAssetRefs.add(assetRef);
+      return true;
+    })
     .map((image, index) =>
-      imageFromSanity(image, getImageAlt(image, `${item.title}, detail image ${index + 1}.`), 1800)
+      imageFromSanity(image, getImageAlt(image, `${item.title}, detail image ${index + 1}.`), {
+        width: 1800
+      })
     )
     .filter(Boolean) as ArtworkImage[];
 
@@ -198,7 +242,7 @@ export function mapSanityArtwork(item: SanityArtwork): Artwork | null {
     size: item.size,
     collection: item.collection,
     coverImage,
-    detailImages: detailImages.length ? [coverImage, ...detailImages] : [coverImage],
+    detailImages: [galleryCoverImage || coverImage, ...detailImages],
     altText,
     published: item.published ?? true,
     featured: item.featured ?? false,

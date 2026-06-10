@@ -23,12 +23,13 @@ const { artwork } = Astro.props;
 const settings = await getSiteSettings();
 const canonicalUrl = `${getSiteUrl()}/artworks/${artwork.slug}`;
 const description = artwork.description || `${artwork.title} by ${settings.artistName}.`;
+const pageImage = artwork.detailImages[0]?.src || artwork.coverImage.src;
 ---
 
 <SiteLayout
   title={`${artwork.title} | ${settings.artistName}`}
   description={description}
-  image={artwork.coverImage.src}
+  image={pageImage}
   canonical={canonicalUrl}
   contactEmail={settings.contactEmail}
   artistName={settings.artistName}

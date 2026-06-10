@@ -10,6 +10,8 @@ import { getSiteUrl } from "@/lib/site";
 const artworks = await getArtworks();
 const settings = await getSiteSettings();
 const featuredArtwork = artworks.find((artwork) => artwork.featured) || artworks[0];
+const featuredImage =
+  featuredArtwork?.detailImages[0]?.src || featuredArtwork?.coverImage.src || settings.heroImage;
 const contactHref = buildMailto({
   email: settings.contactEmail,
   artistName: settings.artistName
@@ -20,14 +22,14 @@ const canonical = getSiteUrl();
 <SiteLayout
   title={`${settings.artistName} | Handcraft, Temari, Macramé, Tatting, Knitting and Painting`}
   description={settings.description}
-  image={featuredArtwork?.coverImage.src || settings.heroImage}
+  image={featuredImage}
   canonical={canonical}
   contactEmail={settings.contactEmail}
   artistName={settings.artistName}
 >
   <section
     class="hero"
-    style={`--hero-image: url('${featuredArtwork?.coverImage.src || settings.heroImage}')`}
+    style={`--hero-image: url('${featuredImage}')`}
   >
     <div class="hero-content">
       <p class="hero-kicker">Handcraft, texture, and quiet repetition</p>

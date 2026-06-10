@@ -35,7 +35,7 @@ export default function ArtworkDetail({
         </a>
       )}
       <div className="detail-layout">
-        <ImageSlider images={artwork.detailImages} title={artwork.title} />
+        <ImageSlider images={artwork.detailImages} title={artwork.title} variant="natural" />
         <div className="detail-copy">
           <div className="detail-eyebrow">
             <span>{getCategoryLabel(artwork.category)}</span>

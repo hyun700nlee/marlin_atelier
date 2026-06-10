@@ -69,11 +69,6 @@
   border-radius: 8px;
 }
 
-.artwork-card:hover .artwork-image-wrap img,
-.artwork-card:focus-visible .artwork-image-wrap img {
-  transform: scale(1.035);
-}
-
 .artwork-image-wrap {
   position: relative;
   display: block;
@@ -87,8 +82,7 @@
 .artwork-image-wrap img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 240ms ease;
+  object-fit: contain;
 }
 
 .artwork-image-wrap .status-badge {
@@ -282,6 +276,24 @@
   object-fit: cover;
   opacity: 0;
   transition: opacity 180ms ease;
+}
+
+.image-slider-natural .image-stage {
+  display: grid;
+  aspect-ratio: auto;
+  place-items: center;
+}
+
+.image-slider-natural .image-stage:not(.is-loaded) {
+  min-height: clamp(220px, 42vw, 560px);
+}
+
+.image-slider-natural .image-stage img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(72vh, 720px);
+  object-fit: contain;
 }
 
 .image-stage img.is-loaded {

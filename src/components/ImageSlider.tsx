@@ -5,11 +5,13 @@ import type { ArtworkImage } from "@/lib/types";
 interface ImageSliderProps {
   images: ArtworkImage[];
   title: string;
+  variant?: "framed" | "natural";
 }
 
-export default function ImageSlider({ images, title }: ImageSliderProps) {
+export default function ImageSlider({ images, title, variant = "framed" }: ImageSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const touchStart = useRef<number | null>(null);
   const hasMultipleImages = images.length > 1;
 
@@ -36,9 +38,18 @@ export default function ImageSlider({ images, title }: ImageSliderProps) {
     setImageLoaded(false);
   }, [currentImage?.src]);
 
+  useEffect(() => {
+    if (imageRef.current?.complete) {
+      setImageLoaded(true);
+    }
+  }, [currentImage?.src]);
+
   if (!currentImage) {
     return (
-      <div className="image-slider image-slider-empty" aria-label={`${title} image gallery`}>
+      <div
+        className={`image-slider image-slider-${variant} image-slider-empty`}
+        aria-label={`${title} image gallery`}
+      >
         <div className="image-stage" />
       </div>
     );
@@ -46,7 +57,7 @@ export default function ImageSlider({ images, title }: ImageSliderProps) {
 
   return (
     <div
-      className="image-slider"
+      className={`image-slider image-slider-${variant}`}
       aria-label={`${title} image gallery`}
       tabIndex={0}
       onKeyDown={(event) => {
@@ -66,9 +77,10 @@ export default function ImageSlider({ images, title }: ImageSliderProps) {
         touchStart.current = null;
       }}
     >
-      <div className="image-stage">
+      <div className={imageLoaded ? "image-stage is-loaded" : "image-stage"}>
         {!imageLoaded && <span className="image-loading">Loading image</span>}
         <img
+          ref={imageRef}
           className={imageLoaded ? "is-loaded" : ""}
           src={currentImage.src}
           alt={currentImage.alt}

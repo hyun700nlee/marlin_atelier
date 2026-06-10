@@ -98,7 +98,7 @@ export default function ArtworkModal({
           <X aria-hidden="true" size={21} />
         </button>
         <div className="modal-grid">
-          <ImageSlider images={artwork.detailImages} title={artwork.title} />
+          <ImageSlider images={artwork.detailImages} title={artwork.title} variant="natural" />
           <div className="modal-copy">
             <div className="detail-eyebrow">
               <span>{getCategoryLabel(artwork.category)}</span>

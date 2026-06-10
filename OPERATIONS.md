@@ -41,14 +41,15 @@ Open:
 Required environment variables:
 
 ```bash
-PUBLIC_SITE_URL=https://your-production-domain.example
-PUBLIC_SANITY_PROJECT_ID=yourprojectid
+PUBLIC_SITE_URL=https://marlin-atelier.pages.dev
+PUBLIC_SANITY_PROJECT_ID=6kr1a68s
 PUBLIC_SANITY_DATASET=production
 PUBLIC_CONTACT_EMAIL=hello@example.com
 ```
 
-When `PUBLIC_SANITY_PROJECT_ID=replacewithprojectid`, the public site falls back to
-sample data and the Studio is not ready for real content management.
+The deployed project defaults to Marlin Atelier's Sanity project. The public site
+falls back to sample data if Sanity has no published artwork or if a Sanity fetch
+fails.
 
 ## 3. Admin Login
 
@@ -252,7 +253,7 @@ Build fails:
 
 Admin cannot log in:
 
-- Confirm `PUBLIC_SANITY_PROJECT_ID` is not `replacewithprojectid`.
+- Confirm `PUBLIC_SANITY_PROJECT_ID` points to the Marlin Atelier Sanity project.
 - Confirm the user is invited to the Sanity project.
 - Confirm the dataset exists.
 - Try a modern Chrome or Safari browser.

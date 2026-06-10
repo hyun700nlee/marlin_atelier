@@ -2,7 +2,7 @@
 import "@/styles/global.css";
 import SanityStudio from "@/components/sanity/SanityStudio";
 
-const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || "6kr1a68s";
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || "production";
 const isSanityConfigured = Boolean(projectId) && projectId !== "replacewithprojectid";
 ---

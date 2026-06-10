@@ -9,7 +9,7 @@ import type {
   SiteSettings
 } from "./types";
 
-const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || "replacewithprojectid";
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || "6kr1a68s";
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || "production";
 const apiVersion = "2026-06-09";
 

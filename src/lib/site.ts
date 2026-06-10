@@ -68,5 +68,5 @@ export function getInquiryLabel(status: ArtworkStatus) {
 }
 
 export function getSiteUrl() {
-  return (import.meta.env.PUBLIC_SITE_URL || "https://example.com").replace(/\/$/, "");
+  return (import.meta.env.PUBLIC_SITE_URL || "https://marlin-atelier.pages.dev").replace(/\/$/, "");
 }

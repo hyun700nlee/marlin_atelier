@@ -40,13 +40,13 @@ npm.cmd run dev
 필수 환경변수:
 
 ```bash
-PUBLIC_SITE_URL=https://your-production-domain.example
-PUBLIC_SANITY_PROJECT_ID=yourprojectid
+PUBLIC_SITE_URL=https://marlin-atelier.pages.dev
+PUBLIC_SANITY_PROJECT_ID=6kr1a68s
 PUBLIC_SANITY_DATASET=production
 PUBLIC_CONTACT_EMAIL=hello@example.com
 ```
 
-`PUBLIC_SANITY_PROJECT_ID=replacewithprojectid` 상태이면 공개 사이트는 샘플 데이터를 사용합니다.
+배포 프로젝트는 Marlin Atelier Sanity project를 기본값으로 사용합니다. Sanity에 공개된 작품이 없거나 Sanity fetch가 실패하면 공개 사이트는 샘플 데이터를 사용합니다.
 이 상태에서는 Studio가 실제 콘텐츠 관리를 할 준비가 된 것이 아닙니다.
 
 ## 3. 관리자 로그인
@@ -250,7 +250,7 @@ Build 실패:
 
 관리자 로그인이 안 됨:
 
-- `PUBLIC_SANITY_PROJECT_ID`가 `replacewithprojectid`가 아닌지 확인합니다.
+- `PUBLIC_SANITY_PROJECT_ID`가 Marlin Atelier Sanity project를 가리키는지 확인합니다.
 - 사용자가 Sanity 프로젝트에 초대되었는지 확인합니다.
 - dataset이 존재하는지 확인합니다.
 - 최신 Chrome 또는 Safari 브라우저에서 다시 시도합니다.

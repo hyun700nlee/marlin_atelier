@@ -2,7 +2,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { schemaTypes } from "./src/schemas";
 
-const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || "replacewithprojectid";
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || "6kr1a68s";
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || "production";
 
 export default defineConfig({

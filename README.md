@@ -45,15 +45,15 @@ npm.cmd run dev
 Copy `.env.example` to `.env` and update values:
 
 ```bash
-PUBLIC_SITE_URL=https://example.com
-PUBLIC_SANITY_PROJECT_ID=replacewithprojectid
+PUBLIC_SITE_URL=https://marlin-atelier.pages.dev
+PUBLIC_SANITY_PROJECT_ID=6kr1a68s
 PUBLIC_SANITY_DATASET=production
 PUBLIC_CONTACT_EMAIL=hello@example.com
 ```
 
-If `PUBLIC_SANITY_PROJECT_ID` is left as `replacewithprojectid`, the public site uses
-the bundled 30 sample artworks. A real Sanity project ID is required for `/admin` to
-act as a usable CMS.
+The deployed project defaults to Marlin Atelier's Sanity project. The public site
+falls back to the bundled 30 sample artworks if Sanity has no published artwork or
+if a Sanity fetch fails.
 
 ## Content Model
 

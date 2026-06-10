@@ -1,5 +1,5 @@
 import { sampleArtworks } from "@/data/sampleArtworks";
-import { artworksQuery, isSanityConfigured, mapSanityArtwork, sanityClient } from "./sanity";
+import { fetchPublishedSanityArtworks, isSanityConfigured } from "./sanity";
 import type { Artwork } from "./types";
 
 function sortArtworks(artworks: Artwork[]) {
@@ -16,8 +16,7 @@ export async function getArtworks(): Promise<Artwork[]> {
   }
 
   try {
-    const results = await sanityClient.fetch(artworksQuery);
-    const mapped = results.map(mapSanityArtwork).filter(Boolean) as Artwork[];
+    const mapped = await fetchPublishedSanityArtworks();
     return mapped.length ? sortArtworks(mapped) : sortArtworks(sampleArtworks);
   } catch (error) {
     console.warn("Falling back to sample artwork data because Sanity fetch failed.", error);

@@ -10,6 +10,7 @@ interface ArtworkModalProps {
   contactEmail: string;
   artistName: string;
   siteUrl: string;
+  showDetailLink?: boolean;
   onClose: () => void;
 }
 
@@ -18,6 +19,7 @@ export default function ArtworkModal({
   contactEmail,
   artistName,
   siteUrl,
+  showDetailLink = true,
   onClose
 }: ArtworkModalProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -137,10 +139,12 @@ export default function ArtworkModal({
                 <Mail aria-hidden="true" size={18} />
                 {getInquiryLabel(artwork.status)}
               </a>
-              <a className="detail-link" href={`/artworks/${artwork.slug}`}>
-                Detail Page
-                <ArrowUpRight aria-hidden="true" size={17} />
-              </a>
+              {showDetailLink && (
+                <a className="detail-link" href={`/artworks/${artwork.slug}`}>
+                  Detail Page
+                  <ArrowUpRight aria-hidden="true" size={17} />
+                </a>
+              )}
             </div>
           </div>
         </div>

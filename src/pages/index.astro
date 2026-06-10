@@ -48,7 +48,13 @@ const canonical = getSiteUrl();
         content replacement in Sanity.
       </p>
     </div>
-    <GalleryExperience artworks={artworks} client:load />
+    <GalleryExperience
+      artworks={artworks}
+      contactEmail={settings.contactEmail}
+      artistName={settings.artistName}
+      siteUrl={canonical}
+      client:load
+    />
   </section>
 
   <section id="about" class="section about-band">

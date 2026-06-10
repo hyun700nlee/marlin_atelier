@@ -20,7 +20,7 @@ export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: false,
   perspective: "published"
 });
 
@@ -77,6 +77,15 @@ export const artworksQuery = `*[_type == "artwork" && published == true] | order
   price,
   links
 }`;
+
+export async function fetchPublishedSanityArtworks(): Promise<Artwork[]> {
+  if (!isSanityConfigured) return [];
+
+  const results = await sanityClient.fetch<SanityArtwork[]>(artworksQuery);
+  return Array.isArray(results)
+    ? (results.map(mapSanityArtwork).filter(Boolean) as Artwork[])
+    : [];
+}
 
 export const siteSettingsQuery = `*[_type == "siteSettings"][0] {
   artistName,
@@ -167,7 +176,7 @@ export function mapSanityArtwork(item: SanityArtwork): Artwork | null {
   }
 
   const altText =
-    item.altText || `${item.title}, an artwork from Marlin's ${item.category} portfolio.`;
+    item.altText?.trim() || `${item.title}, an artwork from Marlin's ${item.category} portfolio.`;
   const coverImage = imageFromSanity(item.coverImage, getImageAlt(item.coverImage, altText), 900);
   if (!coverImage) return null;
 
